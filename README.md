@@ -92,23 +92,23 @@ __Model__:
 
 ```php
 class Site extends Model {
-	public $siteName, $siteDescription;
-	public function rules()
-	{
-		return [
-			[['siteName', 'siteDescription'], 'string'],
-		];
-	}
-	
-	public function fields()
-	{
-	        return ['siteName', 'siteDescription'];
-	}
-	
-	public function attributes()
-	{
-	        return ['siteName', 'siteDescription'];
-	}
+    public $siteName, $siteDescription;
+    public function rules()
+    {
+        return [
+            [['siteName', 'siteDescription'], 'string'],
+        ];
+    }
+    
+    public function fields()
+    {
+            return ['siteName', 'siteDescription'];
+    }
+    
+    public function attributes()
+    {
+            return ['siteName', 'siteDescription'];
+    }
 }
 ```
 __Views__:
@@ -121,12 +121,12 @@ __Controller__:
 ```php
 function actions(){
    return [
-   		//....
+        //....
             'site-kvstore' => [
                 'class' => 'yiiplus\kvstore\KvstoreAction',
                 'modelClass' => 'app\models\Site',
-                //'scenario' => 'site',	// Change if you want to re-use the model for multiple kvstore form.
-                'viewName' => 'site-kvstore'	// The form we need to render
+                //'scenario' => 'site',    // Change if you want to re-use the model for multiple kvstore form.
+                'viewName' => 'site-kvstore'    // The form we need to render
             ],
         //....
     ];
