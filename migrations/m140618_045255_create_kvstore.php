@@ -9,7 +9,7 @@ class m140618_045255_create_kvstore extends \yii\db\Migration
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
         }
         $this->createTable(
-            '{{%kvstore}}',
+            '{{%yp_kvstore}}',
             [
                 'id' => $this->primaryKey(),
                 'type' => $this->string(255)->notNull(),
@@ -26,6 +26,6 @@ class m140618_045255_create_kvstore extends \yii\db\Migration
 
     public function down()
     {
-        $this->dropTable('{{%kvstore}}');
+        $this->dropTable('{{%yp_kvstore}}');
     }
 }

@@ -17,7 +17,7 @@ class BaseKvstore extends ActiveRecord implements KvstoreInterface
      */
     public static function tableName()
     {
-        return '{{%kvstore}}';
+        return '{{%yp_kvstore}}';
     }
 
     /**

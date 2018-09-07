@@ -6,11 +6,11 @@ class m151126_091910_add_unique_index extends Migration
 {
     public function safeUp()
     {
-        $this->createIndex('kvstore_unique_key_section', '{{%kvstore}}', ['section', 'key'], true);
+        $this->createIndex('kvstore_unique_key_section', '{{%yp_kvstore}}', ['section', 'key'], true);
     }
 
     public function safeDown()
     {
-        $this->dropIndex('kvstore_unique_key_section', '{{%kvstore}}');
+        $this->dropIndex('kvstore_unique_key_section', '{{%yp_kvstore}}');
     }
 }
