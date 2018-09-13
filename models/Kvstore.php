@@ -62,8 +62,7 @@ class Kvstore extends BaseKvstore
                 ['key'],
                 'unique',
                 'targetAttribute' => ['section', 'key'],
-                'message' =>
-                    Module::t('{attribute} "{value}" already exists for this section.')
+                'message' => Module::t('{attribute} "{value}" already exists for this section.')
             ],
             ['type', 'in', 'range' => array_keys($this->getTypes(false))],
             [['type', 'created', 'modified'], 'safe'],
