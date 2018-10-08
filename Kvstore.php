@@ -105,16 +105,8 @@ class Kvstore extends Component
         }
 
         $data = $this->getRawConfig();
-
-        if (isset($data[$section][$key][0])) {
-            if (in_array($data[$section][$key][1], ['object', 'boolean', 'bool', 'integer', 'int', 'float', 'string', 'array'])) {
-                if ($this->autoDecodeJson && $data[$section][$key][1] === 'object') {
-                    $value = Json::decode($data[$section][$key][0]);
-                } else {
-                    $value = $data[$section][$key][0];
-                    settype($value, $data[$section][$key][1]);
-                }
-            }
+        if (isset($data[$section][$key])) {
+            $value = $data[$section][$key];
         } else {
             $value = $default;
         }
@@ -143,10 +135,9 @@ class Kvstore extends Component
      * @param $key
      * @param $value
      * @param null $section
-     * @param null $type
      * @return boolean
      */
-    public function set($key, $value, $section = null, $type = null)
+    public function set($key, $value, $section = null)
     {
         if (is_null($section)) {
             $pieces = explode('.', $key);
@@ -154,7 +145,7 @@ class Kvstore extends Component
             $key = $pieces[1];
         }
 
-        if ($this->model->setKvstore($section, $key, $value, $type)) {
+        if ($this->model->setKvstore($section, $key, $value)) {
             return true;
         }
         return false;
@@ -166,16 +157,15 @@ class Kvstore extends Component
      * @param $key
      * @param $value
      * @param null $section
-     * @param null $type
      *
      * @return bool|mixed
      */
-    public function getOrSet($key, $value, $section = null, $type = null)
+    public function getOrSet($key, $value, $section = null)
     {
         if ($this->has($key, $section, true)) {
             return $this->get($key, $section);
         } else {
-            return $this->set($key, $value, $section, $type);
+            return $this->set($key, $value, $section);
         }
     }
 

@@ -3,53 +3,10 @@
 namespace yiiplus\kvstore\models;
 
 use Yii;
-use yii\helpers\Json;
-use yii\base\DynamicModel;
-use yii\base\InvalidParamException;
 use yiiplus\kvstore\Module;
 
 class Kvstore extends BaseKvstore
 {
-    /**
-     * @param bool $forDropDown if false - return array or validators, true - key=>value for dropDown
-     * @return array
-     */
-    public function getTypes($forDropDown = true)
-    {
-        $values = [
-            'string'    => ['value', 'string'],
-            'integer'   => ['value', 'integer'],
-            'boolean'   => ['value', 'boolean', 'trueValue' => "1", 'falseValue' => "0", 'strict' => true],
-            'float'     => ['value', 'number'],
-            'email'     => ['value', 'email'],
-            'ip'        => ['value', 'ip'],
-            'url'       => ['value', 'url'],
-            'object'    => ['value',
-                function ($attribute, $params) {
-                    $object = null;
-                    try {
-                        Json::decode($this->$attribute);
-                    } catch (InvalidParamException $e) {
-                        $this->addError($attribute, Module::t('"{attribute}" must be a valid JSON object', [
-                            'attribute' => $attribute,
-                        ]));
-                    }
-                }
-            ],
-        ];
-
-        if (!$forDropDown) {
-            return $values;
-        }
-
-        $return = [];
-        foreach ($values as $key => $value) {
-            $return[$key] = Module::t($key);
-        }
-
-        return $return;
-    }
-
     /**
      * @inheritdoc
      */
@@ -64,36 +21,9 @@ class Kvstore extends BaseKvstore
                 'targetAttribute' => ['section', 'key'],
                 'message' => Module::t('{attribute} "{value}" already exists for this section.')
             ],
-            ['type', 'in', 'range' => array_keys($this->getTypes(false))],
-            [['type', 'created', 'modified'], 'safe'],
+            [['created', 'modified'], 'safe'],
             [['active'], 'boolean'],
         ];
-    }
-
-    public function beforeSave($insert)
-    {
-        $validators = $this->getTypes(false);
-        if (!array_key_exists($this->type, $validators)) {
-            $this->addError('type', Module::t('Please select correct type'));
-            return false;
-        }
-
-        $model = DynamicModel::validateData([
-            'value' => $this->value
-        ], [
-            $validators[$this->type],
-        ]);
-
-        if ($model->hasErrors()) {
-            $this->addError('value', $model->getFirstError('value'));
-            return false;
-        }
-
-        if ($this->hasErrors()) {
-            return false;
-        }
-
-        return parent::beforeSave($insert);
     }
 
     /**
@@ -103,7 +33,6 @@ class Kvstore extends BaseKvstore
     {
         return [
             'id'        => Module::t('ID'),
-            'type'      => Module::t('Type'),
             'section'   => Module::t('Section'),
             'key'       => Module::t('Key'),
             'value'     => Module::t('Value'),

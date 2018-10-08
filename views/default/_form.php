@@ -11,7 +11,6 @@ use \yiiplus\kvstore\models\Kvstore;
     <?= $form->field($model, 'key')->textInput(['maxlength' => 255]) ?>
     <?= $form->field($model, 'value')->textarea(['rows' => 6]) ?>
     <?= $form->field($model, 'active')->checkbox(['value' => 1]) ?>
-    <?= $form->field($model, 'type')->dropDownList($model->getTypes()) ?>
     <div class="form-group">
         <?=
         Html::submitButton(

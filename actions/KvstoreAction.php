@@ -39,11 +39,6 @@ class KvstoreAction extends Action
             foreach ($model->toArray() as $key => $value) {
                 Yii::$app->kvstore->set($key, $value, $model->formName());
             }
-            Yii::$app->getSession()->addFlash('success',
-                Module::t('Successfully saved kvstore on {section}',
-                    ['section' => $model->formName()]
-                )
-            );
         }
 
         foreach ($model->attributes() as $key) {

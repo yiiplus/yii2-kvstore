@@ -12,7 +12,6 @@ class m140618_045255_create_kvstore extends \yii\db\Migration
             '{{%yp_kvstore}}',
             [
                 'id' => $this->primaryKey(),
-                'type' => $this->string(255)->notNull(),
                 'section' => $this->string(255)->notNull(),
                 'key' => $this->string(255)->notNull(),
                 'value' => $this->text(),

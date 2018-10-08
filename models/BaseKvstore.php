@@ -33,7 +33,6 @@ class BaseKvstore extends ActiveRecord implements KvstoreInterface
                 'unique',
                 'targetAttribute' => ['section', 'key'],
             ],
-            ['type', 'in', 'range' => ['string', 'integer', 'boolean', 'float', 'double', 'object', 'null']],
             [['created', 'modified'], 'safe'],
             [['active'], 'boolean'],
         ];
@@ -74,16 +73,13 @@ class BaseKvstore extends ActiveRecord implements KvstoreInterface
     public function getkvstore()
     {
         $kvstore = static::find()->where(['active' => true])->asArray()->all();
-        return array_merge_recursive(
-            ArrayHelper::map($kvstore, 'key', 'value', 'section'),
-            ArrayHelper::map($kvstore, 'key', 'type', 'section')
-        );
+        return ArrayHelper::map($kvstore, 'key', 'value', 'section');
     }
 
     /**
      * @inheritdoc
      */
-    public function setKvstore($section, $key, $value, $type = null)
+    public function setKvstore($section, $key, $value)
     {
         $model = static::findOne(['section' => $section, 'key' => $key]);
 
@@ -94,24 +90,6 @@ class BaseKvstore extends ActiveRecord implements KvstoreInterface
         $model->section = $section;
         $model->key = $key;
         $model->value = strval($value);
-
-        if ($type !== null) {
-            $model->type = $type;
-        } else {
-            $t = gettype($value);
-            if ($t == 'string') {
-                $error = false;
-                try {
-                    Json::decode($value);
-                } catch (InvalidParamException $e) {
-                    $error = true;
-                }
-                if (!$error) {
-                    $t = 'object';
-                }
-            }
-            $model->type = $t;
-        }
 
         return $model->save();
     }

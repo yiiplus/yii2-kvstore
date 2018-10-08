@@ -17,11 +17,10 @@ interface KvstoreInterface
      * @param $section
      * @param $key
      * @param $value
-     * @param $type
      * @return bool
      * @throws \yii\base\InvalidConfigException
      */
-    public function setKvstore($section, $key, $value, $type);
+    public function setKvstore($section, $key, $value);
 
     /**
      * Deletes a kvstore
