@@ -16,7 +16,7 @@ class KvstoreSearch extends Kvstore
         return [
             [['id'], 'integer'],
             [['active'], 'boolean'],
-            [['section', 'key', 'value', 'created', 'modified'], 'safe'],
+            [['section', 'key', 'value'], 'safe'],
         ];
     }
 

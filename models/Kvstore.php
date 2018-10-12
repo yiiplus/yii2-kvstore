@@ -14,14 +14,14 @@ class Kvstore extends BaseKvstore
     {
         return [
             [['value'], 'string'],
-            [['section', 'key'], 'string', 'max' => 255],
+            [['section', 'key', 'description'], 'string', 'max' => 255],
             [
                 ['key'],
                 'unique',
                 'targetAttribute' => ['section', 'key'],
                 'message' => Module::t('{attribute} "{value}" already exists for this section.')
             ],
-            [['created', 'modified'], 'safe'],
+            [['created_at', 'updated_at'], 'safe'],
             [['active'], 'boolean'],
         ];
     }
@@ -32,13 +32,14 @@ class Kvstore extends BaseKvstore
     public function attributeLabels()
     {
         return [
-            'id'        => Module::t('ID'),
-            'section'   => Module::t('Section'),
-            'key'       => Module::t('Key'),
-            'value'     => Module::t('Value'),
-            'active'    => Module::t('Active'),
-            'created'   => Module::t('Created'),
-            'modified'  => Module::t('Modified'),
+            'id'          => Module::t('ID'),
+            'section'     => Module::t('Section'),
+            'key'         => Module::t('Key'),
+            'value'       => Module::t('Value'),
+            'description' => Module::t('Description'),
+            'active'      => Module::t('Active'),
+            'created_at'  => Module::t('CreatedAt'),
+            'updated_at'  => Module::t('UpdatedAt'),
         ];
     }
 }

@@ -10,6 +10,7 @@ use \yiiplus\kvstore\models\Kvstore;
     <?= $form->field($model, 'section')->textInput(['maxlength' => 255]) ?>
     <?= $form->field($model, 'key')->textInput(['maxlength' => 255]) ?>
     <?= $form->field($model, 'value')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'description')->textInput(['maxlength' => 255]) ?>
     <?= $form->field($model, 'active')->checkbox(['value' => 1]) ?>
     <div class="form-group">
         <?=

@@ -15,9 +15,10 @@ class m140618_045255_create_kvstore extends \yii\db\Migration
                 'section' => $this->string(255)->notNull(),
                 'key' => $this->string(255)->notNull(),
                 'value' => $this->text(),
+                'description' => $this->string(255),
                 'active' => $this->boolean(),
-                'created' => $this->dateTime(),
-                'modified' => $this->dateTime(),
+                'created_at' => $this->dateTime(),
+                'updated_at' => $this->dateTime(),
             ],
             $tableOptions
         );

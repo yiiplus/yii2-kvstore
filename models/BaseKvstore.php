@@ -27,13 +27,13 @@ class BaseKvstore extends ActiveRecord implements KvstoreInterface
     {
         return [
             [['value'], 'string'],
-            [['section', 'key'], 'string', 'max' => 255],
+            [['section', 'key', 'description'], 'string', 'max' => 255],
             [
                 ['key'],
                 'unique',
                 'targetAttribute' => ['section', 'key'],
             ],
-            [['created', 'modified'], 'safe'],
+            [['created_at', 'updated_at'], 'safe'],
             [['active'], 'boolean'],
         ];
     }
@@ -59,8 +59,8 @@ class BaseKvstore extends ActiveRecord implements KvstoreInterface
             'timestamp' => [
                 'class' => TimestampBehavior::className(),
                 'attributes' => [
-                    ActiveRecord::EVENT_BEFORE_INSERT => 'created',
-                    ActiveRecord::EVENT_BEFORE_UPDATE => 'modified',
+                    ActiveRecord::EVENT_BEFORE_INSERT => 'created_at',
+                    ActiveRecord::EVENT_BEFORE_UPDATE => 'updated_at',
                 ],
                 'value' => new Expression('NOW()'),
             ],

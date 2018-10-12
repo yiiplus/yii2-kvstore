@@ -40,8 +40,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     'active:boolean',
                     'key',
                     'value:ntext',
-                    'created:datetime',
-                    'modified:datetime',
+                    'description',
+                    'created_at:datetime',
+                    'updated_at:datetime',
                 ],
             ]
         );
