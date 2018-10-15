@@ -9,16 +9,16 @@ class m140618_045255_create_kvstore extends \yii\db\Migration
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
         }
         $this->createTable(
-            '{{%kvstore}}',
+            '{{%yp_kvstore}}',
             [
                 'id' => $this->primaryKey(),
-                'type' => $this->string(255)->notNull(),
-                'section' => $this->string(255)->notNull(),
+                'group' => $this->string(255)->notNull(),
                 'key' => $this->string(255)->notNull(),
                 'value' => $this->text(),
+                'description' => $this->string(255),
                 'active' => $this->boolean(),
-                'created' => $this->dateTime(),
-                'modified' => $this->dateTime(),
+                'created_at' => $this->dateTime(),
+                'updated_at' => $this->dateTime(),
             ],
             $tableOptions
         );
@@ -26,6 +26,6 @@ class m140618_045255_create_kvstore extends \yii\db\Migration
 
     public function down()
     {
-        $this->dropTable('{{%kvstore}}');
+        $this->dropTable('{{%yp_kvstore}}');
     }
 }

@@ -1,4 +1,16 @@
 <?php
+/**
+ * 键值存储
+ *
+ * PHP version 7
+ *
+ * @category  PHP
+ * @package   Yii2
+ * @author    Hongbin Chen <hongbin.chen@aliyun.com>
+ * @copyright 2006-2018 YiiPlus Ltd
+ * @license   https://github.com/yiiplus/yii2-kvstore/licence.txt BSD Licence
+ * @link      http://www.yiiplus.com
+ */
 
 namespace yiiplus\kvstore;
 
@@ -7,276 +19,201 @@ use yii\base\Component;
 use yii\caching\Cache;
 use yii\helpers\Json;
 
+/**
+ * 键值存储
+ *
+ * @category  PHP
+ * @package   Yii2
+ * @author    Hongbin Chen <hongbin.chen@aliyun.com>
+ * @copyright 2006-2018 YiiPlus Ltd
+ * @license   https://github.com/yiiplus/yii2-kvstore/licence.txt BSD Licence
+ * @link      http://www.yiiplus.com
+ */
 class Kvstore extends Component
 {
     /**
-     * @var string kvstore model. Make sure your kvstore model calls clearCache in the afterSave callback
-     */
-    public $modelClass = 'yiiplus\kvstore\models\BaseKvstore';
-
-    /**
-     * Model to for storing and retrieving kvstore
-     * @var \yiiplus\kvstore\models\KvstoreInterface
+     * KV模型
      */
     protected $model;
 
     /**
-     * @var Cache|string the cache object or the application component ID of the cache object.
-     * Kvstore will be cached through this cache object, if it is available.
-     *
-     * After the Kvstore object is created, if you want to change this property,
-     * you should only assign it with a cache object.
-     * Set this property to null if you do not want to cache the kvstore.
+     * 缓存对象的应用程序组件ID，如果您不想缓存kvstore请将此属性设置为null
      */
     public $cache = 'cache';
 
     /**
-     * @var Cache|string the front cache object or the application component ID of the front cache object.
-     * Front cache will be cleared through this cache object, if it is available.
-     *
-     * After the Kvstore object is created, if you want to change this property,
-     * you should only assign it with a cache object.
-     * Set this property to null if you do not want to clear the front cache.
+     * 缓存前缀
      */
-    public $frontCache;
+    public $cachePrefix = 'yp_kvstore_';
 
     /**
-     * To be used by the cache component.
-     *
-     * @var string cache key
-     */
-    public $cacheKey = 'yiiplus/kvstore';
-
-    /**
-     * @var bool Whether to convert objects stored as JSON into an PHP array
-     * @since 0.6
-     */
-    public $autoDecodeJson = false;
-
-    /**
-     * Holds a cached copy of the data for the current request
-     *
-     * @var mixed
-     */
-    private $_data = null;
-
-    /**
-     * Initialize the component
-     *
-     * @throws \yii\base\InvalidConfigException
+     * 初始化
      */
     public function init()
     {
         parent::init();
 
-        $this->model = new $this->modelClass;
-
+        $this->model = new \yiiplus\kvstore\models\kvstore;
         if (is_string($this->cache)) {
             $this->cache = Yii::$app->get($this->cache, false);
-        }
-        if (is_string($this->frontCache)) {
-            $this->frontCache = Yii::$app->get($this->frontCache, false);
         }
     }
 
     /**
-     * Get's the value for the given key and section.
-     * You can use dot notation to separate the section from the key:
-     * $value = $kvstore->get('section.key');
-     * and
-     * $value = $kvstore->get('key', 'section');
-     * are equivalent
+     * 获取
      *
-     * @param $key
-     * @param string|null $section
+     * @param string      $key
+     * @param null|string $group
      * @param string|null $default
+     * 
      * @return mixed
      */
-    public function get($key, $section = null, $default = null)
+    public function get($key, $group = null, $default = null)
     {
-        if (is_null($section)) {
-            $pieces = explode('.', $key, 2);
-            if (count($pieces) > 1) {
-                $section = $pieces[0];
-                $key = $pieces[1];
-            } else {
-                $section = '';
-            }
-        }
-
-        $data = $this->getRawConfig();
-
-        if (isset($data[$section][$key][0])) {
-            if (in_array($data[$section][$key][1], ['object', 'boolean', 'bool', 'integer', 'int', 'float', 'string', 'array'])) {
-                if ($this->autoDecodeJson && $data[$section][$key][1] === 'object') {
-                    $value = Json::decode($data[$section][$key][0]);
-                } else {
-                    $value = $data[$section][$key][0];
-                    settype($value, $data[$section][$key][1]);
+        list($group, $key) = $this->_groupKey($group, $key);
+        if ($this->cache instanceof Cache) {
+            $cacheKey = $this->cachePrefix . $group . '_' . $key;
+            $value = $this->cache->get( $cacheKey );
+            if ($value === false) {
+                $value = $this->model->getKvstore($group, $key) ?? $default;
+                if($value) {
+                    $this->cache->set($cacheKey, $value);
                 }
             }
         } else {
-            $value = $default;
+            $value = $this->model->getKvstore($group, $key) ?? $default;
         }
+
         return $value;
     }
 
     /**
-     * Checks to see if a kvstore exists.
-     * If $searchDisabled is set to true, calling this function will result in an additional query.
-     * @param $key
-     * @param string|null $section
-     * @param boolean $searchDisabled
+     * 检查是否存在
+     * 如果$searchDisabled设置为true，则调用此函数将直接查询数据库
+     * 
+     * @param string      $key
+     * @param null|string $group
+     * @param boolean     $searchDisabled
+     * 
      * @return boolean
      */
-    public function has($key, $section = null, $searchDisabled = false)
+    public function has($key, $group = null, $searchDisabled = false)
     {
         if ($searchDisabled) {
-            $kvstore = $this->model->findKvstore($key, $section);
+            list($group, $key) = $this->_groupKey($group, $key);
+            $value = $this->model->getKvstore($group, $key);
         } else {
-            $kvstore = $this->get($key, $section);
+            $value = $this->get($key, $group);
         }
-        return is_null($kvstore) ? false : true;
+        return is_null($value) ? false : true;
     }
 
     /**
-     * @param $key
-     * @param $value
-     * @param null $section
-     * @param null $type
+     * 设置
+     * 
+     * @param string      $key
+     * @param string      $value
+     * @param null|string $group
+     * 
      * @return boolean
      */
-    public function set($key, $value, $section = null, $type = null)
+    public function set($key, $value, $group = null)
     {
-        if (is_null($section)) {
-            $pieces = explode('.', $key);
-            $section = $pieces[0];
-            $key = $pieces[1];
-        }
-
-        if ($this->model->setKvstore($section, $key, $value, $type)) {
+        list($group, $key) = $this->_groupKey($group, $key);
+        if ($this->model->setKvstore($group, $key, $value)) {
+            $this->_clearCache($group, $key);
             return true;
         }
         return false;
     }
 
     /**
-     * Returns the specified key or sets the key with the supplied (default) value
+     * 删除
      *
-     * @param $key
-     * @param $value
-     * @param null $section
-     * @param null $type
-     *
-     * @return bool|mixed
-     */
-    public function getOrSet($key, $value, $section = null, $type = null)
-    {
-        if ($this->has($key, $section, true)) {
-            return $this->get($key, $section);
-        } else {
-            return $this->set($key, $value, $section, $type);
-        }
-    }
-
-    /**
-     * Deletes a kvstore
-     *
-     * @param $key
-     * @param null|string $section
+     * @param string      $key
+     * @param null|string $group
+     * 
      * @return bool
      */
-    public function delete($key, $section = null)
+    public function delete($key, $group = null)
     {
-        if (is_null($section)) {
-            $pieces = explode('.', $key);
-            $section = $pieces[0];
-            $key = $pieces[1];
-        }
-        return $this->model->deleteKvstore($section, $key);
+        list($group, $key) = $this->_groupKey($group, $key);
+        $this->_clearCache($group, $key);
+        return $this->model->deleteKvstore($group, $key);
     }
 
     /**
-     * Deletes all kvstore. Be careful!
+     * 激活
      *
+     * @param string      $key
+     * @param null|string $group
+     * 
      * @return bool
      */
-    public function deleteAll()
+    public function activate($key, $group = null)
     {
-        return $this->model->deleteAllKvstore();
+        list($group, $key) = $this->_groupKey($group, $key);
+        if( $this->model->activateKvstore($group, $key)) {
+            $this->_clearCache($group, $key);
+            return true;
+        }
+        return false;
     }
 
     /**
-     * Activates a kvstore
+     * 取消激活
      *
-     * @param $key
-     * @param null|string $section
+     * @param string      $key
+     * @param null|string $group
+     * 
      * @return bool
      */
-    public function activate($key, $section = null)
+    public function deactivate($key, $group = null)
     {
-        if (is_null($section)) {
-            $pieces = explode('.', $key);
-            $section = $pieces[0];
-            $key = $pieces[1];
+        list($group, $key) = $this->_groupKey($group, $key);
+        if( $this->model->deactivateKvstore($group, $key)) {
+            $this->_clearCache($group, $key);
+            return true;
         }
-        return $this->model->activateKvstore($section, $key);
+        return false;
     }
 
     /**
-     * Deactivates a kvstore
+     * 清除缓存
      *
-     * @param $key
-     * @param null|string $section
+     * @param string $group
+     * @param string $key
+     * 
      * @return bool
      */
-    public function deactivate($key, $section = null)
+    private function _clearCache($group, $key)
     {
-        if (is_null($section)) {
-            $pieces = explode('.', $key);
-            $section = $pieces[0];
-            $key = $pieces[1];
-        }
-        return $this->model->deactivateKvstore($section, $key);
-    }
-
-    /**
-     * Clears the kvstore cache on demand.
-     * If you haven't configured cache this does nothing.
-     *
-     * @return boolean True if the cache key was deleted and false otherwise
-     */
-    public function clearCache()
-    {
-        $this->_data = null;
-        if ($this->frontCache instanceof Cache) {
-            $this->frontCache->delete($this->cacheKey);
-        }
         if ($this->cache instanceof Cache) {
-            return $this->cache->delete($this->cacheKey);
+            $cacheKey = $this->cachePrefix . $group . '_' . $key;
+            return $this->cache->delete($cacheKey);
         }
         return true;
     }
 
     /**
-     * Returns the raw configuration array
-     *
+     * 参数处理
+     * 
+     * @param string $group
+     * @param string $key
+     * 
      * @return array
      */
-    public function getRawConfig()
+    private function _groupKey($group, $key)
     {
-        if ($this->_data === null) {
-            if ($this->cache instanceof Cache) {
-                $data = $this->cache->get($this->cacheKey);
-                if ($data === false) {
-                    $data = $this->model->getKvstore();
-                    $this->cache->set($this->cacheKey, $data);
-                }
+        if (is_null($group)) {
+            $pieces = explode('.', $key, 2);
+            if (count($pieces) > 1) {
+                $group = $pieces[0];
+                $key = $pieces[1];
             } else {
-                $data = $this->model->getKvstore();
+                $group = '';
             }
-            $this->_data = $data;
         }
-        return $this->_data;
+        return [$group, $key];
     }
 }

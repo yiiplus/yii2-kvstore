@@ -2,6 +2,7 @@
     "name": "yiiplus/yii2-kvstore",
     "description": "kvstore 是以 key->value 数据结构进行存储",
     "keywords": ["yii", "kvstore", "settings", "config"],
+    "homepage": "https://github.com/yiiplus/",
     "type": "yii2-extension",
     "license": "BSD-3-Clause",
     "support": {
@@ -11,11 +12,12 @@
     "authors": [
         {
             "name": "Hongbin Chen",
-            "email": "87003637@qq.com"
+            "email": "hongbin.chen@aliyun.com"
         }
     ],
     "minimum-stability": "dev",
     "require": {
+        "php": ">=7.1.0",
         "yiisoft/yii2": "^2.0.0"
     },
     "require-dev": {

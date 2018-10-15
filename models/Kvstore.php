@@ -4,113 +4,117 @@ namespace yiiplus\kvstore\models;
 
 use Yii;
 use yii\helpers\Json;
-use yii\base\DynamicModel;
+use yii\db\Expression;
+use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 use yii\base\InvalidParamException;
+use yii\behaviors\TimestampBehavior;
 use yiiplus\kvstore\Module;
 
-class Kvstore extends BaseKvstore
+class Kvstore extends ActiveRecord implements KvstoreInterface
 {
-    /**
-     * @param bool $forDropDown if false - return array or validators, true - key=>value for dropDown
-     * @return array
-     */
-    public function getTypes($forDropDown = true)
+    public static function tableName()
     {
-        $values = [
-            'string'    => ['value', 'string'],
-            'integer'   => ['value', 'integer'],
-            'boolean'   => ['value', 'boolean', 'trueValue' => "1", 'falseValue' => "0", 'strict' => true],
-            'float'     => ['value', 'number'],
-            'email'     => ['value', 'email'],
-            'ip'        => ['value', 'ip'],
-            'url'       => ['value', 'url'],
-            'object'    => ['value',
-                function ($attribute, $params) {
-                    $object = null;
-                    try {
-                        Json::decode($this->$attribute);
-                    } catch (InvalidParamException $e) {
-                        $this->addError($attribute, Module::t('"{attribute}" must be a valid JSON object', [
-                            'attribute' => $attribute,
-                        ]));
-                    }
-                }
-            ],
-        ];
-
-        if (!$forDropDown) {
-            return $values;
-        }
-
-        $return = [];
-        foreach ($values as $key => $value) {
-            $return[$key] = Module::t($key);
-        }
-
-        return $return;
+        return '{{%yp_kvstore}}';
     }
 
-    /**
-     * @inheritdoc
-     */
     public function rules()
     {
         return [
             [['value'], 'string'],
-            [['section', 'key'], 'string', 'max' => 255],
+            [['group', 'key', 'description'], 'string', 'max' => 255],
             [
                 ['key'],
                 'unique',
-                'targetAttribute' => ['section', 'key'],
-                'message' =>
-                    Module::t('{attribute} "{value}" already exists for this section.')
+                'targetAttribute' => ['group', 'key'],
+                'message' => Module::t('{attribute} "{value}" already exists for this group.')
             ],
-            ['type', 'in', 'range' => array_keys($this->getTypes(false))],
-            [['type', 'created', 'modified'], 'safe'],
+            [['created_at', 'updated_at'], 'safe'],
             [['active'], 'boolean'],
         ];
     }
 
-    public function beforeSave($insert)
-    {
-        $validators = $this->getTypes(false);
-        if (!array_key_exists($this->type, $validators)) {
-            $this->addError('type', Module::t('Please select correct type'));
-            return false;
-        }
-
-        $model = DynamicModel::validateData([
-            'value' => $this->value
-        ], [
-            $validators[$this->type],
-        ]);
-
-        if ($model->hasErrors()) {
-            $this->addError('value', $model->getFirstError('value'));
-            return false;
-        }
-
-        if ($this->hasErrors()) {
-            return false;
-        }
-
-        return parent::beforeSave($insert);
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function attributeLabels()
     {
         return [
-            'id'        => Module::t('ID'),
-            'type'      => Module::t('Type'),
-            'section'   => Module::t('Section'),
-            'key'       => Module::t('Key'),
-            'value'     => Module::t('Value'),
-            'active'    => Module::t('Active'),
-            'created'   => Module::t('Created'),
-            'modified'  => Module::t('Modified'),
+            'id'          => Module::t('ID'),
+            'group'       => Module::t('Group'),
+            'key'         => Module::t('Key'),
+            'value'       => Module::t('Value'),
+            'description' => Module::t('Description'),
+            'active'      => Module::t('Active'),
+            'created_at'  => Module::t('CreatedAt'),
+            'updated_at'  => Module::t('UpdatedAt'),
         ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            'timestamp' => [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => 'created_at',
+                    ActiveRecord::EVENT_BEFORE_UPDATE => 'updated_at',
+                ],
+                'value' => new Expression('NOW()'),
+            ],
+        ];
+    }
+
+    public function getkvstore($group, $key)
+    {
+        $data = static::find()->select('value')->where(['group' => $group, 'key' => $key, 'active' => true])->limit(1)->one();
+        if($data) {
+            return $data->value;
+        }
+        return false;
+    }
+
+    public function setKvstore($group, $key, $value)
+    {
+        $model = static::findOne(['group' => $group, 'key' => $key]);
+
+        if ($model === null) {
+            $model = new static();
+            $model->active = 1;
+        }
+        $model->group = $group;
+        $model->key = $key;
+        $model->value = strval($value);
+
+        return $model->save();
+    }
+
+    public function activateKvstore($group, $key)
+    {
+        $model = static::findOne(['group' => $group, 'key' => $key]);
+
+        if ($model && $model->active == 0) {
+            $model->active = 1;
+            return $model->save();
+        }
+        return false;
+    }
+
+    public function deactivateKvstore($group, $key)
+    {
+        $model = static::findOne(['group' => $group, 'key' => $key]);
+
+        if ($model && $model->active == 1) {
+            $model->active = 0;
+            return $model->save();
+        }
+        return false;
+    }
+
+    public function deleteKvstore($group, $key)
+    {
+        $model = static::findOne(['group' => $group, 'key' => $key]);
+
+        if ($model) {
+            return $model->delete();
+        }
+        return true;
     }
 }

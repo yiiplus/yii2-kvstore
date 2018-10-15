@@ -3,10 +3,10 @@
 use yii\helpers\Html;
 use yiiplus\kvstore\Module;
 
-$this->title = Module::t('Update') . ':' . $model->section. '.' . $model->key;
+$this->title = Module::t('Update') . ':' . $model->group. '.' . $model->key;
 
 $this->params['breadcrumbs'][] = ['label' => Module::t('Kvstore'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->section. '.' . $model->key, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => $model->group. '.' . $model->key, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Module::t('Update');
 
 ?>

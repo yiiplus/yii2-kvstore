@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yiiplus\kvstore\Module;
 
-$this->title = $model->section. '.' . $model->key;
+$this->title = $model->group. '.' . $model->key;
 $this->params['breadcrumbs'][] = ['label' => Module::t('Kvstore'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -36,13 +36,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'model' => $model,
                 'attributes' => [
                     'id',
-                    'type',
-                    'section',
+                    'group',
                     'active:boolean',
                     'key',
                     'value:ntext',
-                    'created:datetime',
-                    'modified:datetime',
+                    'description',
+                    'created_at:datetime',
+                    'updated_at:datetime',
                 ],
             ]
         );

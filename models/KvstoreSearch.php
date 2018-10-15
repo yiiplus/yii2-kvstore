@@ -8,31 +8,20 @@ use yii\data\ActiveDataProvider;
 
 class KvstoreSearch extends Kvstore
 {
-    /**
-     * @return array
-     */
     public function rules()
     {
         return [
             [['id'], 'integer'],
             [['active'], 'boolean'],
-            [['type', 'section', 'key', 'value', 'created', 'modified'], 'safe'],
+            [['group', 'key', 'value'], 'safe'],
         ];
     }
 
-    /**
-     * @return array
-     */
     public function scenarios()
     {
-        // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
 
-    /**
-     * @param $params
-     * @return ActiveDataProvider
-     */
     public function search($params)
     {
         $query = Kvstore::find();
@@ -51,7 +40,7 @@ class KvstoreSearch extends Kvstore
             [
                 'id' => $this->id,
                 'active' => $this->active,
-                'section' => $this->section,
+                'group' => $this->group,
             ]
         );
 

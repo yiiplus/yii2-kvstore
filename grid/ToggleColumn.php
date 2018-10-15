@@ -1,4 +1,16 @@
 <?php
+/**
+ * 键值存储
+ *
+ * PHP version 7
+ *
+ * @category  PHP
+ * @package   Yii2
+ * @author    Hongbin Chen <hongbin.chen@aliyun.com>
+ * @copyright 2006-2018 YiiPlus Ltd
+ * @license   https://github.com/yiiplus/yii2-kvstore/licence.txt BSD Licence
+ * @link      http://www.yiiplus.com
+ */
 
 namespace yiiplus\kvstore\grid;
 
@@ -8,59 +20,36 @@ use yii\helpers\Html;
 use yii\web\View;
 use yiiplus\kvstore\Module;
 
+/**
+ * 数据列：是否有效切换
+ *
+ * @category  PHP
+ * @package   Yii2
+ * @author    Hongbin Chen <hongbin.chen@aliyun.com>
+ * @copyright 2006-2018 YiiPlus Ltd
+ * @license   https://github.com/yiiplus/yii2-kvstore/licence.txt BSD Licence
+ * @link      http://www.yiiplus.com
+ */
 class ToggleColumn extends DataColumn
 {
-    /**
-     * Toggle action that will be used as the toggle action in your controller
-     * @var string
-     */
     public $action = 'toggle';
-
-
-    /**
-     * @var string pk field name
-     */
+    
     public $primaryKey = 'primaryKey';
 
-    /**
-     * Whether to use ajax or not
-     * @var bool
-     */
     public $enableAjax = true;
 
-    /**
-     * @var string glyphicon for 'on' value
-     */
     public $iconOn = 'ok';
 
-    /**
-     * @var string glyphicon for 'off' value
-     */
     public $iconOff = 'remove';
 
-    /**
-     * @var string text to display on the 'on' link
-     */
     public $onText;
 
-    /**
-     * @var string text to display on the 'off' link
-     */
     public $offText;
     
-    /**
-     * @var string text to display next to the 'on' link
-     */
     public $displayValueText = false;
     
-    /**
-     * @var string text to display next to the 'on' link
-     */
     public $onValueText;
     
-    /**
-     * @var string text to display next to the 'off' link
-     */
     public $offValueText;
     
 
@@ -83,9 +72,6 @@ class ToggleColumn extends DataColumn
         }
     }
 
-    /**
-     * @inheritdoc
-     */
     protected function renderDataCellContent($model, $key, $index)
     {
         $url = [$this->action, 'id' => $model->{$this->primaryKey}];
@@ -114,9 +100,6 @@ class ToggleColumn extends DataColumn
         ) . ( $this->displayValueText ? " {$valueText}" : "" );
     }
 
-    /**
-     * Registers the ajax JS
-     */
     public function registerJs()
     {
         if(Yii::$app->request->isAjax) {
