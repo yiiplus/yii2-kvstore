@@ -1,31 +1,51 @@
 <?php
+/**
+ * 键值存储
+ *
+ * PHP version 7
+ *
+ * @category  PHP
+ * @package   Yii2
+ * @author    Hongbin Chen <hongbin.chen@aliyun.com>
+ * @copyright 2006-2018 YiiPlus Ltd
+ * @license   https://github.com/yiiplus/yii2-kvstore/licence.txt BSD Licence
+ * @link      http://www.yiiplus.com
+ */
+
 namespace yiiplus\kvstore\actions;
 
 use Yii;
 use yii\base\Action;
 
+/**
+ * 键值存储基础动作
+ *
+ * @category  PHP
+ * @package   Yii2
+ * @author    Hongbin Chen <hongbin.chen@aliyun.com>
+ * @copyright 2006-2018 YiiPlus Ltd
+ * @license   https://github.com/yiiplus/yii2-kvstore/licence.txt BSD Licence
+ * @link      http://www.yiiplus.com
+ */
 class KvstoreAction extends Action
 {
     /**
-     * @var string class name of the model which will be used to validate the attributes.
-     * The class should have a scenario matching the `scenario` variable.
-     * The model class must implement [[Model]].
-     * This property must be set.
+     * 模型名称
      */
     public $modelClass;
 
     /**
-     * @var string The scenario this model should use to make validation
-     */
-    public $scenario;
-
-    /**
-     * @var string the name of the view to generate the form. Defaults to 'kvstore'.
+     * 视图名称
      */
     public $viewName = 'kvstore';
 
     /**
-     * Render the kvstore form.
+     * 场景
+     */
+    public $scenario;
+
+    /**
+     * 键值存储基础动作
      */
     public function run()
     {

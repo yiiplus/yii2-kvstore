@@ -1,4 +1,16 @@
 <?php
+/**
+ * 键值存储
+ *
+ * PHP version 7
+ *
+ * @category  PHP
+ * @package   Yii2
+ * @author    Hongbin Chen <hongbin.chen@aliyun.com>
+ * @copyright 2006-2018 YiiPlus Ltd
+ * @license   https://github.com/yiiplus/yii2-kvstore/licence.txt BSD Licence
+ * @link      http://www.yiiplus.com
+ */
 
 namespace yiiplus\kvstore\controllers;
 
@@ -11,6 +23,16 @@ use yiiplus\kvstore\models\Kvstore;
 use yiiplus\kvstore\models\KvstoreSearch;
 use yiiplus\kvstore\actions\ToggleAction;
 
+/**
+ * 键值存储管理
+ *
+ * @category  PHP
+ * @package   Yii2
+ * @author    Hongbin Chen <hongbin.chen@aliyun.com>
+ * @copyright 2006-2018 YiiPlus Ltd
+ * @license   https://github.com/yiiplus/yii2-kvstore/licence.txt BSD Licence
+ * @link      http://www.yiiplus.com
+ */
 class DefaultController extends Controller
 {
     public function behaviors()

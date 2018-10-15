@@ -24,35 +24,36 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
     <div class="box-body">
     <?php Pjax::begin(); ?>
-    <?=
-    GridView::widget(
-        [
-            'dataProvider' => $dataProvider,
-            'filterModel' => $searchModel,
-            'columns' => [
-                'id',
-                [
-                    'attribute' => 'section',
-                    'filter' => ArrayHelper::map(
-                        Kvstore::find()->select('section')->distinct()->where(['<>', 'section', ''])->all(),
-                        'section',
-                        'section'
-                    ),
+    <?php
+        echo GridView::widget(
+            [
+                'dataProvider' => $dataProvider,
+                'filterModel' => $searchModel,
+                'columns' => [
+                    'id',
+                    [
+                        'attribute' => 'group',
+                        'filter' => ArrayHelper::map(
+                            Kvstore::find()->select('group')->distinct()->where(['<>', 'group', ''])->all(),
+                            'group',
+                            'group'
+                        ),
+                    ],
+                    'key',
+                    'value:ntext',
+                    'description',
+                    'created_at',
+                    'updated_at',
+                    [
+                        'class' => '\yiiplus\kvstore\grid\ToggleColumn',
+                        'attribute' => 'active',
+                        'filter' => [1 => Yii::t('yii', 'Yes'), 0 => Yii::t('yii', 'No')],
+                    ],
+                    ['class' => 'yii\grid\ActionColumn'],
                 ],
-                'key',
-                'value:ntext',
-                'description',
-                'created_at',
-                'updated_at',
-                [
-                    'class' => '\yiiplus\kvstore\grid\ToggleColumn',
-                    'attribute' => 'active',
-                    'filter' => [1 => Yii::t('yii', 'Yes'), 0 => Yii::t('yii', 'No')],
-                ],
-                ['class' => 'yii\grid\ActionColumn'],
-            ],
-        ]
-    ); ?>
+            ]
+        ); 
+    ?>
     <?php Pjax::end(); ?>
     </div>
     <div class="box-footer"></div>

@@ -19,7 +19,7 @@ or add
 "yiiplus/yii2-kvstore": "^2.0.0"
 ```
 
-to the require section of your `composer.json` file.
+to the require group of your `composer.json` file.
 
 Subsequently, run
 
@@ -62,15 +62,15 @@ Typical component usage
 
 $kvstore = Yii::$app->kvstore;
 
-$value = $kvstore->get('section.key');
+$value = $kvstore->get('group.key');
 
-$value = $kvstore->get('key', 'section');
+$value = $kvstore->get('key', 'group');
 
-$kvstore->set('section.key', 'value');
+$kvstore->set('group.key', 'value');
 
-$kvstore->set('section.key', 'value', null, 'string');
+$kvstore->set('group.key', 'value', null, 'string');
 
-$kvstore->set('key', 'value', 'section', 'integer');
+$kvstore->set('key', 'value', 'group', 'integer');
 
 // Automatically called on set();
 $kvstore->clearCache();
@@ -86,7 +86,7 @@ To use a custom kvstore form, you can use the included `KvstoreAction`.
 2. Create an associated view with an `ActiveForm` containing all the kvstore you need.
 3. Add `yiiplus\kvstore\actions\KvstoreAction` to the controller's actions.
 
-The kvstore will be stored in section taken from the form name, with the key being the field name.
+The kvstore will be stored in group taken from the form name, with the key being the field name.
 
 __Model__:
 

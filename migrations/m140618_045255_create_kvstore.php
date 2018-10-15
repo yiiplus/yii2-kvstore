@@ -12,7 +12,7 @@ class m140618_045255_create_kvstore extends \yii\db\Migration
             '{{%yp_kvstore}}',
             [
                 'id' => $this->primaryKey(),
-                'section' => $this->string(255)->notNull(),
+                'group' => $this->string(255)->notNull(),
                 'key' => $this->string(255)->notNull(),
                 'value' => $this->text(),
                 'description' => $this->string(255),

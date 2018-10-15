@@ -1,9 +1,31 @@
 <?php
+/**
+ * 键值存储
+ *
+ * PHP version 7
+ *
+ * @category  PHP
+ * @package   Yii2
+ * @author    Hongbin Chen <hongbin.chen@aliyun.com>
+ * @copyright 2006-2018 YiiPlus Ltd
+ * @license   https://github.com/yiiplus/yii2-kvstore/licence.txt BSD Licence
+ * @link      http://www.yiiplus.com
+ */
 
 namespace yiiplus\kvstore;
 
 use Yii;
 
+/**
+ * Module
+ *
+ * @category  PHP
+ * @package   Yii2
+ * @author    Hongbin Chen <hongbin.chen@aliyun.com>
+ * @copyright 2006-2018 YiiPlus Ltd
+ * @license   https://github.com/yiiplus/yii2-kvstore/licence.txt BSD Licence
+ * @link      http://www.yiiplus.com
+ */
 class Module extends \yii\base\Module
 {
     // 控制器名称空间

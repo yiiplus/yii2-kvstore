@@ -9,13 +9,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="box box-primary kvstore-create">
     <div class="box-header"></div>
     <div class="box-body">
-    <?=
-    $this->render(
-        '_form',
-        [
-            'model' => $model,
-        ]
-    ) ?>
+        <?php echo $this->render('_form',['model' => $model]); ?>
     </div>
     <div class="box-footer"></div>
 </div>
