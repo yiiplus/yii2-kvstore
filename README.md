@@ -92,11 +92,6 @@ class Site extends Model {
     }
 }
 
-// Views
-<?php $form = ActiveForm::begin(['id' => 'site-kvstore-form']); ?>
-<?= $form->field($model, 'siteName') ?>
-<?= $form->field($model, 'siteDescription') ?>
-
 //Controller
 function actions(){
    return [
@@ -111,4 +106,10 @@ function actions(){
         ....
     ];
 }
+
+// Views
+<?php $form = ActiveForm::begin(['id' => 'site-kvstore-form']); ?>
+<?php echo $form->field($model, 'siteName'); ?>
+<?php echo $form->field($model, 'siteDescription'); ?>
+<?php ActiveForm::end(); ?>
 ```
