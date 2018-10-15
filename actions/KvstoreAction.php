@@ -35,6 +35,11 @@ class KvstoreAction extends Action
     public $modelClass;
 
     /**
+     * 分组
+     */
+    public $group = null;
+
+    /**
      * 视图名称
      */
     public $viewName = 'kvstore';
@@ -49,20 +54,31 @@ class KvstoreAction extends Action
      */
     public function run()
     {
+        // 模型实例化
         $model = new $this->modelClass();
-
+        
+        // 场景设置
         if ($this->scenario) {
             $model->setScenario($this->scenario);
         }
-        
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            foreach ($model->toArray() as $key => $value) {
-                Yii::$app->kvstore->set($key, $value, $model->formName());
-            }
+
+        // 分组设置
+        if ($this->group === null) {
+            $this->group = $model->formName();
         }
 
+        // kvStore 保存
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            foreach ($model->toArray() as $key => $value) {
+                Yii::$app->kvstore->set($key, $value, $this->group);
+            }
+            $this->controller->redirect(Yii::$app->request->getUrl());
+            return;
+        }
+        
+        // kvStore 查询
         foreach ($model->attributes() as $key) {
-            $model->{$key} = Yii::$app->kvstore->get($key, $model->formName());
+            $model->{$key} = Yii::$app->kvstore->get($key, $this->group);
         }
 
         return $this->controller->render($this->viewName, ['model' => $model]);
