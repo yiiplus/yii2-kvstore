@@ -27,6 +27,7 @@ class Kvstore extends ActiveRecord implements KvstoreInterface
                 ['key'],
                 'unique',
                 'targetAttribute' => ['group', 'key'],
+                'message' => Module::t('{attribute} "{value}" already exists for this group.')
             ],
             [['created_at', 'updated_at'], 'safe'],
             [['active'], 'boolean'],

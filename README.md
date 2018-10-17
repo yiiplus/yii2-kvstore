@@ -38,6 +38,13 @@ php composer.phar require --prefer-dist yiiplus/yii2-kvstore "^2.0.0"
 ...
 
 'components' => [
+    'i18n' => [
+        'translations' => [
+            '*' => [
+                'class' => 'yii\i18n\PhpMessageSource'
+            ],
+        ],
+    ],
     'kvstore' => [
         'class' => 'yiiplus\kvstore\Kvstore'
     ],
