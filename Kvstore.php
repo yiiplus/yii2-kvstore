@@ -53,7 +53,7 @@ class Kvstore extends Component
     {
         parent::init();
 
-        $this->model = new \yiiplus\kvstore\models\kvstore;
+        $this->model = new \yiiplus\kvstore\models\Kvstore;
         if (is_string($this->cache)) {
             $this->cache = Yii::$app->get($this->cache, false);
         }
