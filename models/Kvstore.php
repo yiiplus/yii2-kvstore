@@ -61,6 +61,18 @@ class Kvstore extends ActiveRecord implements KvstoreInterface
         ];
     }
 
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        Yii::$app->kvstore->clearCache($this->group, $this->key);
+    }
+
+    public function afterDelete()
+    {
+        parent::afterDelete();
+        Yii::$app->kvstore->clearCache($this->group, $this->key);
+    }
+
     public function getkvstore($group, $key)
     {
         $data = static::find()->select('value')->where(['group' => $group, 'key' => $key, 'active' => true])->limit(1)->one();

@@ -53,7 +53,7 @@ class Kvstore extends Component
     {
         parent::init();
 
-        $this->model = new \yiiplus\kvstore\models\kvstore;
+        $this->model = new \yiiplus\kvstore\models\Kvstore;
         if (is_string($this->cache)) {
             $this->cache = Yii::$app->get($this->cache, false);
         }
@@ -121,7 +121,6 @@ class Kvstore extends Component
     {
         list($group, $key) = $this->_groupKey($group, $key);
         if ($this->model->setKvstore($group, $key, $value)) {
-            $this->_clearCache($group, $key);
             return true;
         }
         return false;
@@ -138,7 +137,6 @@ class Kvstore extends Component
     public function delete($key, $group = null)
     {
         list($group, $key) = $this->_groupKey($group, $key);
-        $this->_clearCache($group, $key);
         return $this->model->deleteKvstore($group, $key);
     }
 
@@ -154,7 +152,6 @@ class Kvstore extends Component
     {
         list($group, $key) = $this->_groupKey($group, $key);
         if( $this->model->activateKvstore($group, $key)) {
-            $this->_clearCache($group, $key);
             return true;
         }
         return false;
@@ -172,7 +169,6 @@ class Kvstore extends Component
     {
         list($group, $key) = $this->_groupKey($group, $key);
         if( $this->model->deactivateKvstore($group, $key)) {
-            $this->_clearCache($group, $key);
             return true;
         }
         return false;
@@ -186,7 +182,7 @@ class Kvstore extends Component
      * 
      * @return bool
      */
-    private function _clearCache($group, $key)
+    public function clearCache($group, $key)
     {
         if ($this->cache instanceof Cache) {
             $cacheKey = $this->cachePrefix . $group . '_' . $key;
