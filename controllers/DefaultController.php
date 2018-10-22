@@ -19,6 +19,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\caching\Cache;
 use yiiplus\kvstore\models\Kvstore;
 use yiiplus\kvstore\models\KvstoreSearch;
 use yiiplus\kvstore\actions\ToggleAction;
@@ -72,7 +73,25 @@ class DefaultController extends Controller
 
     public function actionView($id)
     {
-        return $this->render('view', ['model' => $this->findModel($id)]);
+        $model = $this->findModel($id);
+
+        if (Yii::$app->kvstore->cache instanceof Cache) {
+            $model = $this->findModel($id);
+            $cacheKey   = Yii::$app->kvstore->cachePrefix . $model->group . '_' . $model->key;
+            $cacheValue = Yii::$app->kvstore->cache->get($cacheKey);
+            $params = [
+                'model' => $model,
+                'cacheName'  => get_class(Yii::$app->kvstore->cache),
+                'cacheKey'   => $cacheKey,
+                'cacheValue' => $cacheValue,
+            ];
+        } else {
+            $params = [
+                'model' => $this->findModel($id),
+            ];
+        }
+
+        return $this->render('view', $params);
     }
 
     public function actionCreate()
