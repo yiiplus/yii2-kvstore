@@ -126,6 +126,6 @@ class DefaultController extends Controller
         if (($model = Kvstore::findOne($id)) !== null) {
             return $model;
         }
-        throw new NotFoundHttpException('The requested page does not exist.');
+        throw new NotFoundHttpException(Yii::t('yiiplus/kvstore', '请求页不存在'));
     }
 }

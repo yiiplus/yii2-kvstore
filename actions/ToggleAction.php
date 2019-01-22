@@ -78,7 +78,7 @@ class ToggleAction extends Action
         }
 
         if (empty($this->modelClass) || !class_exists($this->modelClass)) {
-            throw new InvalidConfigException("Model class doesn't exist");
+            throw new InvalidConfigException(Yii::t('yiiplus/kvstore', '模型类不存在'));
         }
         
         $modelClass = $this->modelClass;
@@ -87,7 +87,7 @@ class ToggleAction extends Action
         $model = $model->one();
 
         if (!$model->hasAttribute($this->attribute)) {
-            throw new InvalidConfigException("Attribute doesn't exist");
+            throw new InvalidConfigException(Yii::t('yiiplus/kvstore', '属性不存在'));
         }
 
         if ($model->$attribute == $this->on) {
