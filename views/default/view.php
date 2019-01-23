@@ -54,9 +54,9 @@ $this->params['breadcrumbs'][] = $this->title;
         if(isset($cacheName)) {
             echo '<h3>Cache:</h3>';
             echo '<table id="w0" class="table table-striped table-bordered detail-view"><tbody>';
-            echo '<tr><th>驱动</th><td>' . $cacheName . '</td></tr>';
-            echo '<tr><th>缓存键</th><td>' . $cacheKey . '</td></tr>';
-            echo '<tr><th>缓存值</th><td>' . $cacheValue . '</td></tr>';
+            echo '<tr><th>'. Module::t('驱动') .'</th><td>' . $cacheName . '</td></tr>';
+            echo '<tr><th>'. Module::t('缓存键') .'</th><td>' . $cacheKey . '</td></tr>';
+            echo '<tr><th>'. Module::t('缓存值') .'</th><td>' . $cacheValue . '</td></tr>';
             echo '</tbody></table>';
         }
     ?>
