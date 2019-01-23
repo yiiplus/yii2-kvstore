@@ -3,11 +3,11 @@
 use yii\helpers\Html;
 use yiiplus\kvstore\Module;
 
-$this->title = Module::t('Update') . ':' . $model->group. '.' . $model->key;
+$this->title = Module::t('更新') . ':' . $model->group. '.' . $model->key;
 
-$this->params['breadcrumbs'][] = ['label' => Module::t('Kvstore'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Module::t('键值存储'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->group. '.' . $model->key, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = Module::t('Update');
+$this->params['breadcrumbs'][] = Module::t('更新');
 
 ?>
 <div class="box box-primary dataTables_wrapper kvstore-update">

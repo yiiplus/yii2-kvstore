@@ -12,8 +12,8 @@ use yiiplus\kvstore\Module;
     <?php echo $form->field($model, 'value'); ?>
     <?php echo $form->field($model, 'active')->checkbox(); ?>
     <div class="form-group">
-        <?php echo Html::submitButton(Module::t('Search'), ['class' => 'btn btn-primary']); ?>
-        <?php echo Html::resetButton(Module::t('Reset'), ['class' => 'btn btn-default']); ?>
+        <?php echo Html::submitButton(Module::t('搜索'), ['class' => 'btn btn-primary']); ?>
+        <?php echo Html::resetButton(Module::t('重置'), ['class' => 'btn btn-default']); ?>
     </div>
     <?php ActiveForm::end(); ?>
 </div>

@@ -56,16 +56,16 @@ class ToggleColumn extends DataColumn
     public function init()
     {
         if ($this->onText === null) {
-            $this->onText = Module::t('On');
+            $this->onText = Module::t('开');
         }
         if ($this->offText === null) {
-            $this->offText = Module::t('Off');
+            $this->offText = Module::t('关');
         }
         if ($this->onValueText === null) {
-            $this->onValueText = Module::t('Active');
+            $this->onValueText = Module::t('有效');
         }
         if ($this->offValueText === null) {
-            $this->offValueText = Module::t('Inactive');
+            $this->offValueText = Module::t('无效');
         }
         if ($this->enableAjax) {
             $this->registerJs();
