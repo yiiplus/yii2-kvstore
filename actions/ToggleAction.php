@@ -19,6 +19,7 @@ use yii\base\Action;
 use yii\base\InvalidConfigException;
 use yii\db\Expression;
 use yii\web\MethodNotAllowedHttpException;
+use yiiplus\kvstore\Module;
 
 /**
  * 动作：是否有效切换
@@ -78,7 +79,7 @@ class ToggleAction extends Action
         }
 
         if (empty($this->modelClass) || !class_exists($this->modelClass)) {
-            throw new InvalidConfigException(Yii::t('yiiplus/kvstore', '模型类不存在'));
+            throw new InvalidConfigException(Module::t('模型类不存在'));
         }
         
         $modelClass = $this->modelClass;
@@ -87,7 +88,7 @@ class ToggleAction extends Action
         $model = $model->one();
 
         if (!$model->hasAttribute($this->attribute)) {
-            throw new InvalidConfigException(Yii::t('yiiplus/kvstore', '属性不存在'));
+            throw new InvalidConfigException(Module::t('属性不存在'));
         }
 
         if ($model->$attribute == $this->on) {
