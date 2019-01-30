@@ -15,6 +15,5 @@ return [
     'Description' => '描述',
     'CreatedAt' => '创建时间',
     'UpdatedAt' => '更新时间',
-    '{attribute} "{value}" already exists for this group.' => '{attribute} "{value}" 已经存在于该分组中.',
     'Successfully saved kvstore on {group}'=>'{group} 保存成功'
 ];

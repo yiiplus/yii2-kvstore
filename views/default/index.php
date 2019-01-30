@@ -7,13 +7,13 @@ use yiiplus\kvstore\models\Kvstore;
 use yii\helpers\ArrayHelper;
 use yii\widgets\Pjax;
 
-$this->title = Module::t('Kvstore');
+$this->title = Module::t('键值存储');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="box box-primary dataTables_wrapper kvstore-index">
     <div class="box-header">
         <div class="no-margin pull-left">
-            <?= Html::a(Module::t('Create'), ['create'], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a(Module::t('创建'), ['create'], ['class' => 'btn btn-primary']) ?>
         </div>
         <div class="no-margin pull-right">
             <button type="button" class="btn btn-default"><i class="fa fa-cog"></i></button>
@@ -47,7 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     [
                         'class' => '\yiiplus\kvstore\grid\ToggleColumn',
                         'attribute' => 'active',
-                        'filter' => [1 => Yii::t('yii', 'Yes'), 0 => Yii::t('yii', 'No')],
+                        'filter' => [1 => Yii::t('yii', '是'), 0 => Yii::t('yii', '否')],
                     ],
                     ['class' => 'yii\grid\ActionColumn'],
                 ],

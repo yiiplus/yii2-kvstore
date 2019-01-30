@@ -5,22 +5,22 @@ use yii\widgets\DetailView;
 use yiiplus\kvstore\Module;
 
 $this->title = $model->group. '.' . $model->key;
-$this->params['breadcrumbs'][] = ['label' => Module::t('Kvstore'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Module::t('键值存储'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="box box-primary kvstore-view">
     <div class="box-header">
         <div class="no-margin pull-left">
-        <?php echo Html::a(Module::t('Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']); ?>
+        <?php echo Html::a(Module::t('更新'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']); ?>
         <?php
             echo Html::a(
-                Module::t('Delete'),
+                Module::t('删除'),
                 ['delete', 'id' => $model->id],
                 [
                     'class' => 'btn btn-danger',
                     'data' => [
-                        'confirm' => Module::t('Are you sure you want to delete this item?'),
+                        'confirm' => Module::t('确定要删除该项目吗?'),
                         'method' => 'post',
                     ],
                 ]
@@ -54,9 +54,9 @@ $this->params['breadcrumbs'][] = $this->title;
         if(isset($cacheName)) {
             echo '<h3>Cache:</h3>';
             echo '<table id="w0" class="table table-striped table-bordered detail-view"><tbody>';
-            echo '<tr><th>驱动</th><td>' . $cacheName . '</td></tr>';
-            echo '<tr><th>缓存键</th><td>' . $cacheKey . '</td></tr>';
-            echo '<tr><th>缓存值</th><td>' . $cacheValue . '</td></tr>';
+            echo '<tr><th>'. Module::t('驱动') .'</th><td>' . $cacheName . '</td></tr>';
+            echo '<tr><th>'. Module::t('缓存键') .'</th><td>' . $cacheKey . '</td></tr>';
+            echo '<tr><th>'. Module::t('缓存值') .'</th><td>' . $cacheValue . '</td></tr>';
             echo '</tbody></table>';
         }
     ?>

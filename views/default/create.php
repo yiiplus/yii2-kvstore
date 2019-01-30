@@ -2,8 +2,8 @@
 use yii\helpers\Html;
 use yiiplus\kvstore\Module;
 
-$this->title = Module::t('Create');
-$this->params['breadcrumbs'][] = ['label' => Module::t('Kvstore'), 'url' => ['index']];
+$this->title = Module::t('创建');
+$this->params['breadcrumbs'][] = ['label' => Module::t('键值存储'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="box box-primary kvstore-create">

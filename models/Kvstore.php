@@ -27,7 +27,7 @@ class Kvstore extends ActiveRecord implements KvstoreInterface
                 ['key'],
                 'unique',
                 'targetAttribute' => ['group', 'key'],
-                'message' => Module::t('{attribute} "{value}" already exists for this group.')
+                'message' => Module::t('{attribute} "{value}" 已经存在于该分组中')
             ],
             [['created_at', 'updated_at'], 'safe'],
             [['active'], 'boolean'],
@@ -37,14 +37,14 @@ class Kvstore extends ActiveRecord implements KvstoreInterface
     public function attributeLabels()
     {
         return [
-            'id'          => Module::t('ID'),
-            'group'       => Module::t('Group'),
-            'key'         => Module::t('Key'),
-            'value'       => Module::t('Value'),
-            'description' => Module::t('Description'),
-            'active'      => Module::t('Active'),
-            'created_at'  => Module::t('CreatedAt'),
-            'updated_at'  => Module::t('UpdatedAt'),
+            'id'          => Module::t('主键ID'),
+            'group'       => Module::t('分组'),
+            'key'         => Module::t('键'),
+            'value'       => Module::t('值'),
+            'description' => Module::t('描述'),
+            'active'      => Module::t('有效'),
+            'created_at'  => Module::t('创建时间'),
+            'updated_at'  => Module::t('更新时间'),
         ];
     }
 

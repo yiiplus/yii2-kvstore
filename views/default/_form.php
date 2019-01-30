@@ -15,7 +15,7 @@ use yiiplus\kvstore\models\Kvstore;
     <div class="form-group">
         <?php
             echo Html::submitButton(
-                $model->isNewRecord ? Module::t('Create') : Module::t('Update'),
+                $model->isNewRecord ? Module::t('创建') : Module::t('更新'),
                 [
                     'class' => $model->isNewRecord ?
                         'btn btn-success' : 'btn btn-primary'
