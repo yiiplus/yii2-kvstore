@@ -19,12 +19,8 @@ use Yii;
 /**
  * Module
  *
- * @category  PHP
- * @package   Yii2
- * @author    Hongbin Chen <hongbin.chen@aliyun.com>
- * @copyright 2006-2018 YiiPlus Ltd
- * @license   https://github.com/yiiplus/yii2-kvstore/licence.txt BSD Licence
- * @link      http://www.yiiplus.com
+ * @author Hongbin Chen <hongbin.chen@aliyun.com>
+ * @since 2.0.0
  */
 class Module extends \yii\base\Module
 {
