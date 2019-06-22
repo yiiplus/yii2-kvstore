@@ -119,15 +119,7 @@ function actions(){
 <?php echo $form->field($model, 'siteName'); ?>
 <?php echo $form->field($model, 'siteDescription'); ?>
 <div class="form-group">
-    <?php
-        echo Html::submitButton(
-            $model->isNewRecord ? Module::t('创建') : Module::t('更新'),
-            [
-                'class' => $model->isNewRecord ?
-                    'btn btn-success' : 'btn btn-primary'
-            ]
-        );
-    ?>
+    <?php echo Html::submitButton(Module::t('保存'), ['class' => 'btn btn-primary']); ?>
 </div>
 <?php ActiveForm::end(); ?>
 ```
