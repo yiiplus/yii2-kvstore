@@ -79,8 +79,6 @@ $kvstore->set('key', 'value', 'group');
 
 ```php
 // Model
-namespace yiiplus\kvstore\models;
-
 class Site extends Model {
     public $siteName, $siteDescription;
     public function rules()
@@ -102,8 +100,6 @@ class Site extends Model {
 }
 
 //Controller
-namespace yiiplus\kvstore\controllers;
-
 function actions(){
    return [
         ....
