@@ -79,6 +79,8 @@ $kvstore->set('key', 'value', 'group');
 
 ```php
 // Model
+namespace yiiplus\kvstore\models;
+
 class Site extends Model {
     public $siteName, $siteDescription;
     public function rules()
@@ -100,11 +102,13 @@ class Site extends Model {
 }
 
 //Controller
+namespace yiiplus\kvstore\controllers;
+
 function actions(){
    return [
         ....
             'site-kvstore' => [
-                'class' => 'yiiplus\kvstore\KvstoreAction',
+                'class' => 'yiiplus\kvstore\actions\KvstoreAction',
                 'modelClass' => 'app\models\Site',
                 //'group' => 'site',
                 //'scenario' => 'kvstore',
@@ -118,5 +122,16 @@ function actions(){
 <?php $form = ActiveForm::begin(['id' => 'site-kvstore-form']); ?>
 <?php echo $form->field($model, 'siteName'); ?>
 <?php echo $form->field($model, 'siteDescription'); ?>
+<div class="form-group">
+    <?php
+        echo Html::submitButton(
+            $model->isNewRecord ? Module::t('创建') : Module::t('更新'),
+            [
+                'class' => $model->isNewRecord ?
+                    'btn btn-success' : 'btn btn-primary'
+            ]
+        );
+    ?>
+</div>
 <?php ActiveForm::end(); ?>
 ```
